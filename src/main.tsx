@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthProvider } from "./contexts/AuthContext.tsx";
 
 // Create a new React Query client instance
 const queryClient = new QueryClient();
@@ -17,8 +18,10 @@ createRoot(document.getElementById('root')!).render(
         {/* Provider gives access to the global store across the app */}
         <Provider store={store}>
           <BrowserRouter> {/* Enables routing  */}
-            <App /> {/* main application component  */}
-            <ReactQueryDevtools initialIsOpen={false} /> {/* Allows the use of React Query Devtools  */}
+            <AuthProvider>
+              <App /> {/* main application component  */}
+              <ReactQueryDevtools initialIsOpen={false} /> {/* Allows the use of React Query Devtools  */}
+            </AuthProvider>
           </BrowserRouter>
         </Provider>
     </QueryClientProvider>

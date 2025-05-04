@@ -1,24 +1,36 @@
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
-import Products from "./components/Products";
-import ShoppingCart from "./components/ShoppingCart";
+import Products from "./pages/Products";
+import ShoppingCart from "./pages/ShoppingCart";
+import Register from "./pages/Register";
+import UserProfile from "./pages/UserProfile";
+import Login from "./pages/Login";
+import AdminProducts from "./pages/AdminProducts";
+import AddFirestoreProduct from "./components/AddFirestoreProduct";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ProtectedRoute from "./components/ProtectRoute";
 
-const App: React.FC = () => {
-  
+function App() {
   return (
     <>
-      {/* The navbar is visible on all pages */}
+      {/* Global nav bar rendered on all pages */}
       <NavBar />
-      {/* Defines the routes for the app */}
+      
+      {/* Application Routes */}
       <Routes>
-        {/* The Home route navigates to the Products page */}
+        {/* Public Routes */}
         <Route path='/' element={<Products />} /> 
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-        {/* The Cart route navigates to the ShoppingCart component */}
-        <Route path="/cart" element={<ShoppingCart />} /> 
+        {/* Protected Routes - only displayed when a user is logged in */}
+        <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+        <Route path="/cart" element={<ProtectedRoute><ShoppingCart /></ProtectedRoute>} /> 
+        <Route path="/admin" element={<ProtectedRoute><AdminProducts /></ProtectedRoute>} />
+        <Route path="/add-product" element={<ProtectedRoute><AddFirestoreProduct /></ProtectedRoute>} />
       </Routes>
     </>
+
   );
 };
 

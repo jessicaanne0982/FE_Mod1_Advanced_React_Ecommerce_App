@@ -5,16 +5,31 @@ import { RootState } from "../redux/store";
 import { Product } from "../types/types";
 import { addToCart } from "../redux/CartSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
-// Asynchronous function that makes a GET request from the API depending on the chosen category and displays those products
+// Asynchronous function that makes a GET request from the Fake Store API depending on the chosen category and displays those products
 // If no category is chosen, all products will display
-const fetchProducts = async (category: string): Promise<Product[]> => {
+const fetchProductsFromAPI = async (category: string): Promise<Product[]> => {
     const url = category
         ? `https://fakestoreapi.com/products/category/${category}`
         : 'https://fakestoreapi.com/products';
     
     const response = await axios.get(url);
     return response.data;
+};
+
+// Fetches products from Firestore
+const fetchProductsFromFirestore = async (): Promise<Product[]> => {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const firestoreProducts: Product[] = [];
+
+    // Convert each document into a Product object and push it to an array
+    querySnapshot.forEach((doc) => {
+        firestoreProducts.push({ id: doc.id, ...doc.data() } as unknown as Product);
+    });
+
+    return firestoreProducts;
 };
 
 const Products = () => {
@@ -25,15 +40,29 @@ const Products = () => {
     // Pulls selected category from the store
     const selectedCategory = useSelector((state: RootState) => state.category.selectedCategory);
 
-    // Use 'useQuery' to fetch products and re-fetch when selectedCategory changes
-    const { data, isLoading, error } = useQuery<Product[]>({
+    // Fetch products from the API with React Query
+    const { data: apiProducts, isLoading, error } = useQuery<Product[]>({
         queryKey: ['products', selectedCategory],
-        queryFn: () => fetchProducts(selectedCategory),
+        queryFn: () => fetchProductsFromAPI(selectedCategory),
     });
+
+    // Fetch products from Firestore
+    const { data: firestoreProducts = [] } = useQuery<Product[]>({
+        queryKey: ['firestoreProducts'],
+        queryFn: fetchProductsFromFirestore,
+    });
+
+    // Filter Firestore products by selectedCategory (if selected)
+    const filteredFirestoreProducts = selectedCategory
+    ? firestoreProducts.filter((product) => product.category === selectedCategory)
+    : firestoreProducts;
+
+    // Merge both product arrays
+    const allProducts = [...(apiProducts || []), ...filteredFirestoreProducts];
 
     // Loading state
     if (isLoading) return <p>Loading...</p>
-    // Error state
+    // Show error state if API request fails
     if (error) return <p>Error loading products!</p>;
 
     return ( // Display the products in a table format
@@ -53,7 +82,7 @@ const Products = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data?.map((product) => (
+                    {allProducts.map((product) => (
                         <tr key={product.id}>
                             <td>
                                 <Image
@@ -64,7 +93,7 @@ const Products = () => {
                                 />
                             </td>
                             <td style={{ maxWidth: '300px' }}>{product.title}</td>
-                            <td>{product.price.toFixed(2)}</td>
+                            <td>{product.price}</td>
                             <td>{product.category}</td>
                             <td style={{ maxWidth: '300px' }}>{product.description}</td>
                             <td>{product.rating?.rate ?? 'N/A'} ⭐</td>
