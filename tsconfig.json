@@ -1,7 +1,14 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "module": "esnext",          // Keep "esnext" for ESM support
+    "target": "esnext",          // Modern JavaScript
+    "moduleResolution": "node",  // Use "node" for Jest compatibility
+    "jsx": "react-jsx",          // JSX pragma for React 17+
+    "esModuleInterop": true,     // Helps with commonjs modules
+    "allowSyntheticDefaultImports": true,
+    "types": ["jest", "node"],   // Include jest types for tests
+    "strict": true
+  },
+  "include": ["src", "src/__tests__"],
+  "exclude": ["node_modules", "dist"]
 }
