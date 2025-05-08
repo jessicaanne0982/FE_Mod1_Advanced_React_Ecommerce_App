@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import NavBar from '../components/NavBar';
@@ -6,15 +6,25 @@ import { MemoryRouter } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import type { AuthContextType } from '../contexts/AuthContext';
 import { Provider } from 'react-redux';
-import { store } from '../redux/store'; // make sure this points to your actual store
+import { store } from '../redux/store'; 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import firebase from '../firebaseConfig';
+
+let auth: ReturnType<typeof import('firebase/auth').getAuth>;
+let db: ReturnType<typeof import('firebase/firestore').getFirestore>;
+
+beforeAll(async() => {
+  const res = await firebase
+  auth = res.auth
+  db = res.db
+})
 
 // Create a new QueryClient instance for each test run to avoid cache issues
 const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false, // optional: avoid retries in test to simplify output
+        retry: false, 
       },
     },
   });
@@ -45,7 +55,7 @@ describe('Admin Button visibility', () => {
         name: 'Admin User',
         address: '123 Admin St',
         phone: '123-456-7890',
-        createdAt: new Date(), // or a mock date if needed
+        createdAt: new Date(), 
       };
     renderNavBarWithUser(mockUser);
     expect(screen.getByRole('button', { name: /admin/i })).toBeInTheDocument();

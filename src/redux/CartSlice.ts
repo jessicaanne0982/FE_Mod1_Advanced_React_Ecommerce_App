@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Product } from "../types/types";
 import { RootState } from "./store";
-import { db, auth } from "../firebaseConfig";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import firebase from "../firebaseConfig";
 
 // Defines the starting state for the cart slice
 // The cart contains an array of Product objects
@@ -60,6 +60,7 @@ const cartSlice = createSlice({
 export const submitCart = createAsyncThunk (
     'cart/submitCart',
     async (_, { getState, dispatch }) => {
+        const { auth, db } = await firebase;
         const state = getState() as RootState;
         const items = state.cart.items; // gets the current cart items from Redux
         const user = auth.currentUser; // gets the current Firebase user that's logged in

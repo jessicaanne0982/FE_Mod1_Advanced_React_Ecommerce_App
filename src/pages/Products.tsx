@@ -1,3 +1,4 @@
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Container, Table, Image } from "react-bootstrap";
@@ -6,7 +7,11 @@ import { Product } from "../types/types";
 import { addToCart } from "../redux/CartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import firebase from "../firebaseConfig";
+import type { Firestore } from 'firebase/firestore';
+import { useState, useEffect } from "react";
+
+
 
 // Asynchronous function that makes a GET request from the Fake Store API depending on the chosen category and displays those products
 // If no category is chosen, all products will display
@@ -19,9 +24,18 @@ const fetchProductsFromAPI = async (category: string): Promise<Product[]> => {
     return response.data;
 };
 
-// Fetches products from Firestore
-const fetchProductsFromFirestore = async (): Promise<Product[]> => {
-    const querySnapshot = await getDocs(collection(db, "products"));
+const Products = () => {
+    const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
+    useEffect(() => {
+        firebase.then(({ db }) => {
+            setDbInstance(db)
+        })
+    }, [])
+
+    // Fetches products from Firestore
+    const fetchProductsFromFirestore = async (): Promise<Product[]> => {
+        if (!dbInstance) return[];
+    const querySnapshot = await getDocs(collection(dbInstance, "products"));
     const firestoreProducts: Product[] = [];
 
     // Convert each document into a Product object and push it to an array
@@ -31,8 +45,6 @@ const fetchProductsFromFirestore = async (): Promise<Product[]> => {
 
     return firestoreProducts;
 };
-
-const Products = () => {
     const dispatch = useDispatch();
     // Pull current cart items from the store
     const { items } = useSelector((state: RootState) => state.cart);

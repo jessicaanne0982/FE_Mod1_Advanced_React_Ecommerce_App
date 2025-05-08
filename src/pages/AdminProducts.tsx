@@ -1,37 +1,48 @@
 // Only displays Firestore Products and allows edits and deletion
-
+import React, { useEffect} from "react";
 import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import type { Firestore } from 'firebase/firestore';
+import firebase from "../firebaseConfig";
 import { Table, Button, Container, Modal, Form } from "react-bootstrap";
 import { Product } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-// Only fetches products from Firestore (not Fake Store API)
-const fetchProductsFromFirestore = async (): Promise<Product[]> => {
-    const querySnapshot = await getDocs(collection(db, "products"));
+
+
+const AdminProducts = () => {
+    const navigate = useNavigate();
+
+    const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
+    useEffect(() => {
+        firebase.then(({ db }) => {
+            setDbInstance(db)
+        })
+    }, [])
+    // Only fetches products from Firestore (not Fake Store API)
+    const fetchProductsFromFirestore = async (): Promise<Product[]> => {
+        if(!dbInstance) return [];
+    const querySnapshot = await getDocs(collection(dbInstance, "products"));
     return querySnapshot.docs.map(doc => ({ 
         id: doc.id, 
         ...doc.data()
     } as unknown as Product)); // Cast to match the Product type
 };
-
-const AdminProducts = () => {
-    const navigate = useNavigate();
-
     // Uses React Query to manage fetching and caching of Firestore products
     const { data: products = [], refetch } = useQuery({
         queryKey: ['adminFirestoreProducts'],
         queryFn: fetchProductsFromFirestore,
     });
+    
 
     const [showModal, setShowModal] = useState(false); // Controls visibility of edit modal
     const [ currentProduct, setCurrentProduct ] = useState<Product | null>(null); // Currently selected product to edit
 
     // Deletes a product by its Firestore ID
     const handleDelete = async (id: string) => {
-        await deleteDoc(doc(db, "products", id));
+        if (!dbInstance) return;
+        await deleteDoc(doc(dbInstance, "products", id));
         refetch();
     };
 
@@ -55,7 +66,8 @@ const AdminProducts = () => {
     const handleUpdate = async () => {
         if (!currentProduct) return;
         try {
-            await updateDoc(doc(db, "products", String(currentProduct.id)), {
+            if (!dbInstance) return;
+            await updateDoc(doc(dbInstance, "products", String(currentProduct.id)), {
                 title: currentProduct.title,
                 price: currentProduct.price,
                 category: currentProduct.category,

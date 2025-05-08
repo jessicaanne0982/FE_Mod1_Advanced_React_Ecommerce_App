@@ -5,11 +5,11 @@ export default {
     '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
     '^.+\\.(js|jsx|mjs)$': 'babel-jest',
   },
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // Ensure jest-dom setup
+  setupFilesAfterEnv: ['<rootDir>/jest.envSetup.js'], 
   moduleNameMapper: {
     '\\.(css|less)$': 'identity-obj-proxy',
-    '\\.(png|jpg|jpeg|gif|webp|svg)$': '<rootDir>/file-mock.js',
-    '^src/(.*)$': '<rootDir>/src/$1',           // For absolute imports
+    '\\.(png|jpg|jpeg|gif|webp|svg)$': '<rootDir>/fileMock.js',
+    '^src/(.*)$': '<rootDir>/src/$1',       
   },
   roots: ['<rootDir>/src', '<rootDir>/src/__tests__'],
   collectCoverage: true,
@@ -21,10 +21,9 @@ export default {
     '/node_modules/',
   ],
   testMatch: [
-    '**/__tests__/**/*.test.tsx',
-    '**/__tests__/**/*.test.ts',
+      '**/__tests__/**/*.test.{ts,tsx,js,jsx}',
   ],
   modulePaths: ['<rootDir>/src'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  moduleDirectories: ['node_modules', 'src'],  // Added for module resolution
+  moduleDirectories: ['node_modules', 'src'],  
 };

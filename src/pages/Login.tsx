@@ -1,7 +1,10 @@
-import { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+// import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import firebase from "../firebaseConfig";
+import type { Auth } from 'firebase/auth';
+
 
 const Login = () => {
     const [email, setEmail] = useState<string>("");
@@ -9,23 +12,32 @@ const Login = () => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate(); // used to redirect users after login
 
+    const [authInstance, setAuthInstance] = useState<Auth | null>(null);
+    useEffect(() => {
+        firebase.then(({ auth }) => {
+            setAuthInstance(auth)
+        })
+    }, [])
+
     // Redirect to profile if already logged in
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (!authInstance) return;
+        const unsubscribe = onAuthStateChanged(authInstance, (user) => {
             if (user) {
                 navigate("/profile");
             }
         });
     
         return () => unsubscribe(); // Clean up the listener
-    }, [navigate]);
+    }, [navigate, authInstance]);
 
     // Handles login form submission
     const handleLogin = async (e: FormEvent) => {
         e.preventDefault(); // Prevents the page from reloading
         try {
             // Attempt login using Firebase Authentication
-            await signInWithEmailAndPassword(auth, email, password);
+            if (!authInstance) return;
+            await signInWithEmailAndPassword(authInstance, email, password);
             // alert("Login successful!");
             // Redirects to the user profile
             navigate("/profile");

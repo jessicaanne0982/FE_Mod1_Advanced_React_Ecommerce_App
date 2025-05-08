@@ -7,7 +7,10 @@ import logo from '../assets/logo.png';
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import firebase from "../firebaseConfig";
+import type { Auth } from 'firebase/auth';
+import { useState, useEffect } from "react";
+
 
 // Fetches product categories from the Fake Store API
 const fetchCategories = async (): Promise<string[]> => {
@@ -21,6 +24,12 @@ const NavBar: React.FC = () => {
     const navigate = useNavigate(); // Navigation handler
     const { user } = useAuth(); // Auth context to get user
 
+    const [authInstance, setAuthInstance] = useState<Auth | null>(null);
+    useEffect(() => {
+        firebase.then(({ auth }) => {
+            setAuthInstance(auth)
+        })
+    }, [])
     // React query to fetch categories and handle loading, error, and caching
     const { data: categories, isLoading, error } = useQuery<string[]>({
         queryKey: ['categories'], // unique key for caching
@@ -29,7 +38,8 @@ const NavBar: React.FC = () => {
 
     // Logs the user out and redirects to the login page
     const handleLogout = async () => {
-        await signOut(auth);
+        if(!authInstance) return;
+        await signOut(authInstance);
         navigate("/login")
     };
 

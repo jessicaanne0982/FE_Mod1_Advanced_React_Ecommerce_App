@@ -5,7 +5,7 @@ const { TextEncoder, TextDecoder } = require('util');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Set global TextEncoder/TextDecoder (needed by some test tools like Firebase)
+// Set global TextEncoder/TextDecoder 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
@@ -28,3 +28,4 @@ global.import = {
     },
   },
 };
+

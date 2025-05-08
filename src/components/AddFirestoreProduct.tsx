@@ -1,10 +1,12 @@
 // Allows users to add new products to the store
-import React, { useState} from "react";
-import { db } from "../firebaseConfig";
+// import { db } from "../firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { FirestoreProduct } from "../types/types";
 import { Form, Button, Container, InputGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import firebase from "../firebaseConfig";
+import type { Firestore } from 'firebase/firestore';
+import { useState, useEffect } from "react";
 
 // initial state excludes id, rating, and image from user entered products
 const initialState: Omit<FirestoreProduct, 'id' | 'rating' | 'image'> = {
@@ -18,7 +20,12 @@ const initialState: Omit<FirestoreProduct, 'id' | 'rating' | 'image'> = {
 const AddFirestoreProduct = () => {
     const [data, setData] = useState(initialState);
     const navigate = useNavigate();
-
+    const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
+    useEffect(() => {
+        firebase.then(({ db }) => {
+            setDbInstance(db)
+        })
+    }, [])
     // Handles input changes for text, number, and textarea fields
     const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -40,7 +47,8 @@ const AddFirestoreProduct = () => {
         e.preventDefault(); // prevents default submission behavior
         try {
             // Add new product to the "products" collection
-            await addDoc(collection(db, 'products'), data);
+            if (!dbInstance) return;
+            await addDoc(collection(dbInstance, 'products'), data);
             alert('New product added!');
             setData(initialState); // reset form
             navigate('/admin'); // redirect to Admin page

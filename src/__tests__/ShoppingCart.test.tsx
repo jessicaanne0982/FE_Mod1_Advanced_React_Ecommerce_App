@@ -15,7 +15,7 @@ const mockProduct: Product = {
   title: 'Test Product',
   image: 'https://via.placeholder.com/150',
   price: 10,
-  quantity: 2, // required for cart logic
+  quantity: 2, 
   description: 'Test product description',
   category: 'Test category',
   rating: {

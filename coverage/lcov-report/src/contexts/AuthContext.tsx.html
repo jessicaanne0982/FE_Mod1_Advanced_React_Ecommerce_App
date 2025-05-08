@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">46.42% </span>
+                <span class="strong">34.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/28</span>
+                <span class='fraction'>13/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>1/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/25</span>
+                <span class='fraction'>11/33</span>
             </div>
         
             
@@ -125,9 +125,26 @@
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -144,9 +161,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,10 +217,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { createContext, useState, useContext, useEffect, Dispatch, SetStateAction } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "../firebaseConfig";
+// import { auth, db } from "../firebaseConfig";
 import { User as UserInterface } from "../types/types";
-&nbsp;
-// TypeScript interface for context's shape
+import firebase from "../firebaseConfig";
+import type { Auth } from 'firebase/auth';
+import type { Firestore } from 'firebase/firestore';
+    
+// interface for context's shape
 interface AuthContextType {
     user: UserInterface | null;
     setUser: Dispatch&lt;SetStateAction&lt;UserInterface | null&gt;&gt;;
@@ -206,13 +237,24 @@ const AuthContext = createContext&lt;AuthContextType | undefined&gt;(undefined);
 export const AuthProvider = <span class="fstat-no" title="function not covered" >({</span> children }: { children: React.ReactNode }) =&gt; {
     const [user, setUser] = <span class="cstat-no" title="statement not covered" >useState&lt;UserInterface | null&gt;(null);</span> // Authenticated user state
     const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >useState(true);</span> // Loading state while checking auth
-&nbsp;
+    const [authInstance, setAuthInstance] = <span class="cstat-no" title="statement not covered" >useState&lt;Auth | null&gt;(null);</span>
+    const [dbInstance, setDbInstance] = <span class="cstat-no" title="statement not covered" >useState&lt;Firestore | null&gt;(null);</span>
 <span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        firebase.then(<span class="fstat-no" title="function not covered" >({</span> auth, db }) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            setAuthInstance(auth)</span>
+<span class="cstat-no" title="statement not covered" >            setDbInstance(db)</span>
+        })
+    }, [])
+    
+ 
+<span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!authInstance) <span class="cstat-no" title="statement not covered" >return;</span></span>
         // Listens for Firebase auth state changes
-        const unsubscribe = <span class="cstat-no" title="statement not covered" >auth.onAuthStateChanged(<span class="fstat-no" title="function not covered" >async </span>(user) =&gt; {</span>
+        const unsubscribe = <span class="cstat-no" title="statement not covered" >authInstance.onAuthStateChanged(<span class="fstat-no" title="function not covered" >async </span>(user) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            if (user) {</span>
+<span class="cstat-no" title="statement not covered" >                <span class="missing-if-branch" title="if path not taken" >I</span>if (!dbInstance) <span class="cstat-no" title="statement not covered" >return;</span></span>
                 // If user is logged in, retrieve their data from Firestore
-                const userDocument = <span class="cstat-no" title="statement not covered" >await getDoc(doc(db, "users", user.uid));</span>
+                const userDocument = <span class="cstat-no" title="statement not covered" >await getDoc(doc(dbInstance, "users", user.uid));</span>
 <span class="cstat-no" title="statement not covered" >                <span class="missing-if-branch" title="if path not taken" >I</span>if (userDocument.exists()) {</span>
                     const data = <span class="cstat-no" title="statement not covered" >userDocument.data() as UserInterface;</span>
 <span class="cstat-no" title="statement not covered" >                    setUser(data); </span>// Set user state with data from Firestore
@@ -225,7 +267,7 @@ export const AuthProvider = <span class="fstat-no" title="function not covered" 
         });
         // Clean up the listener when the component unmounts
 <span class="cstat-no" title="statement not covered" >        return <span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >unsubscribe();</span></span>
-    }, []);
+    }, [authInstance, dbInstance]);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    return (</span>
         // Provide auth state and updated to the rest of the app
@@ -256,7 +298,7 @@ export default AuthProvider;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-05T17:23:35.430Z
+                at 2025-05-08T23:39:03.938Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

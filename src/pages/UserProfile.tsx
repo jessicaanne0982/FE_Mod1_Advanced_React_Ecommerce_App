@@ -1,8 +1,12 @@
-import { useState, useEffect} from "react";
-import { auth, db } from "../firebaseConfig";
+import React, { useState, useEffect} from "react";
+// import { auth, db } from "../firebaseConfig";
 import { doc, getDoc, updateDoc, deleteDoc, getDocs, collection, query, where, Timestamp } from "firebase/firestore";
 import { deleteUser as firebaseDeleteUser } from "firebase/auth";
 import { User, Order } from "../types/types";
+import firebase from "../firebaseConfig";
+import type { Auth } from 'firebase/auth';
+import type { Firestore } from 'firebase/firestore';
+
 
 const UserProfile = () => {
     const [userData, setUserData] = useState<User | null>(null);
@@ -12,21 +16,32 @@ const UserProfile = () => {
     const [orders, setOrders] = useState<Order[]>([]);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
+    const [authInstance, setAuthInstance] = useState<Auth | null>(null);
+    const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
+    useEffect(() => {
+        firebase.then(({ auth, db }) => {
+            setAuthInstance(auth)
+            setDbInstance(db)
+        })
+    }, [])
+
     // useEffect hook to fetch user data and order history
     useEffect(() => {
         const fetchData = async() => {
-            const currentUser = auth.currentUser;
+            if (!authInstance) return;
+            const currentUser = authInstance.currentUser;
             if (!currentUser) return;
 
             // fetch user profile from Firestore
-            const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+            if (!dbInstance) return;
+            const userDoc = await getDoc(doc(dbInstance, "users", currentUser.uid));
             if (userDoc.exists()) {
                 const data = userDoc.data() as User;
                 setUserData(data);
             }
 
             // fetch user's order history
-            const ordersQuery = query(collection(db, "orders"), where ("userId", "==", currentUser.uid));
+            const ordersQuery = query(collection(dbInstance, "orders"), where ("userId", "==", currentUser.uid));
             const querySnapshot = await getDocs(ordersQuery);
 
             const fetchedOrders: Order[] = querySnapshot.docs.map(doc => ({
@@ -38,15 +53,17 @@ const UserProfile = () => {
 
         fetchData(); 
 
-    }, []);
+    }, [authInstance, dbInstance]);
 
    // Update user profile
     const updateProfile = async () => {
-        const currentUser = auth.currentUser;
+        if (!authInstance) return;
+        const currentUser = authInstance.currentUser;
         if (!currentUser) return;
 
         try {
-            const userRef = doc(db, "users", currentUser.uid);
+            if (!dbInstance) return;
+            const userRef = doc(dbInstance, "users", currentUser.uid);
         
             // update user data in Firestore
             await updateDoc(userRef, {
@@ -82,10 +99,12 @@ const UserProfile = () => {
     
     // delete user documents and Firebase auth
     const deleteAccount = async() => {
-        const currentUser = auth.currentUser;
+        if (!authInstance) return;
+        const currentUser = authInstance.currentUser;
         if (!currentUser) return;
         try {
-            await deleteDoc(doc(db,'users', currentUser.uid)); // deletes the User documents
+            if (!dbInstance) return; 
+            await deleteDoc(doc(dbInstance,'users', currentUser.uid)); // deletes the User documents
             await firebaseDeleteUser(currentUser); // deletes the user from Firebase Auth
             alert("Account has been successfully deleted")
         } catch (error) {
@@ -109,7 +128,7 @@ const UserProfile = () => {
                 <h3 className="text-center mb-4">User Profile</h3>
 
                 {/* Display current user info */}
-                <p><strong>Email:</strong> {auth.currentUser?.email}</p>
+                <p><strong>Email:</strong> {authInstance?.currentUser?.email}</p>
                 <p><strong>Name:</strong> {userData?.name || "Not set"}</p>
                 <p><strong>Address:</strong> {userData?.address || "Not set"}</p>
                 <p><strong>Phone:</strong> {userData?.phone || "Not set"}</p>
