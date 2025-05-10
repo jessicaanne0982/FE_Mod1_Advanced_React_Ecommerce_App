@@ -61,6 +61,7 @@ const Products = () => {
     const { data: firestoreProducts = [] } = useQuery<Product[]>({
         queryKey: ['firestoreProducts'],
         queryFn: fetchProductsFromFirestore,
+        enabled: !!dbInstance,
     });
 
     // Filter Firestore products by selectedCategory (if selected)
