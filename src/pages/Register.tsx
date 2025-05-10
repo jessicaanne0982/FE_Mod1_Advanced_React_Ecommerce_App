@@ -18,12 +18,15 @@ const Register = () => {
     const navigate = useNavigate();
     const [authInstance, setAuthInstance] = useState<Auth | null>(null);
     const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
+
+    // Initializes and stores Firebase Auth and Firestore instances on mount
     useEffect(() => {
         firebase.then(({ auth, db }) => {
             setAuthInstance(auth)
             setDbInstance(db)
         })
     }, [])
+
     // Handles form submission to register the user
     const handleRegister = async (e: FormEvent) => {
         e.preventDefault();

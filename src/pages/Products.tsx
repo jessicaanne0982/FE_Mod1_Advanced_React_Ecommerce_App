@@ -11,8 +11,6 @@ import firebase from "../firebaseConfig";
 import type { Firestore } from 'firebase/firestore';
 import { useState, useEffect } from "react";
 
-
-
 // Asynchronous function that makes a GET request from the Fake Store API depending on the chosen category and displays those products
 // If no category is chosen, all products will display
 const fetchProductsFromAPI = async (category: string): Promise<Product[]> => {
@@ -24,6 +22,7 @@ const fetchProductsFromAPI = async (category: string): Promise<Product[]> => {
     return response.data;
 };
 
+// Products component - initializes and stores the Firestore instance on mount
 const Products = () => {
     const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
     useEffect(() => {
@@ -109,7 +108,7 @@ const Products = () => {
                             <td>{product.category}</td>
                             <td style={{ maxWidth: '300px' }}>{product.description}</td>
                             <td>{product.rating?.rate ?? 'N/A'} ⭐</td>
-                            <td><button onClick={() => dispatch(addToCart(product))}>Add to Cart</button></td>
+                            <td><button onClick={() => dispatch(addToCart(product))} >Add to Cart</button></td>
                         </tr>
                     ))}
                 </tbody>

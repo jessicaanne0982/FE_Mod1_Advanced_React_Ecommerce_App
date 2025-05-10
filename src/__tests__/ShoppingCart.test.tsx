@@ -9,7 +9,7 @@ import cartReducer from '../redux/CartSlice';
 import type { Product } from '../types/types';
 import { BrowserRouter } from 'react-router-dom';
 
-// Mock Product for shopping cart
+// Mock Product data to simulate cart items in tests
 const mockProduct: Product = {
     id: 1,
   title: 'Test Product',
@@ -24,43 +24,50 @@ const mockProduct: Product = {
   },
 };
 
-// Create a store with preloaded state
+// Function to render the ShoppingCart component with a preloaded Redux store state
 const renderWithStore = (preloadedItems: Product[]) => {
-    const store = configureStore({
-        reducer: {
-            cart: cartReducer,
-        },
-        preloadedState: {
-            cart: {
-                items: preloadedItems,
-            },
-        },
-    });
-
-    return render (
-        <Provider store={store}>
-            <BrowserRouter>
-                <ShoppingCart />
-            </BrowserRouter>
-        </Provider>
-    );
+  // Configure a Redux store with preloaded cart state
+  const store = configureStore({
+    reducer: {
+      cart: cartReducer, // Responsible for handling cart actions  
+    },
+    preloadedState: {
+      cart: {
+          items: preloadedItems, // Preload the cart with mock items
+      },
+    },
+  });
+  // Return the render function wrapped with necessary providers
+  return render (
+      <Provider store={store}>
+          <BrowserRouter>
+              <ShoppingCart />
+          </BrowserRouter>
+      </Provider>
+  );
 };
 
 describe('Shopping Cart Component', () => {
+  // Test to check if an item is displayed in the shopping cart when added
   test('displays item when added to cart', () => {
-    renderWithStore([mockProduct]);
+    renderWithStore([mockProduct]); // Render with the mock product in the cart
 
+    // Assert that the product title is displayed
     expect(screen.getByText(/Test Product/i)).toBeInTheDocument();
+    // Assert that the correct quantity (2) is displayed for the product
     expect(screen.getByText('2')).toBeInTheDocument();
+    // Assert that the total price is calculated correctly based on quantity and price
     expect(screen.getByText((_, node) =>
           node?.textContent?.replace(/\s/g, '') === 'Total:$20.00')).toBeInTheDocument();
 
   });
-
+  // Test to ensure the correct total and item count is displayed in the cart
   test('shows correct total and item count', () => {
     renderWithStore([mockProduct]);
 
+    // Assert that the total number of items (2) is shown
     expect(screen.getByText(/Number of Items: 2/i)).toBeInTheDocument();
+    // Assert that the correct total price ($20.00) is displayed
     expect(screen.getByText(/Total: \$20.00/i)).toBeInTheDocument();
   });
 });

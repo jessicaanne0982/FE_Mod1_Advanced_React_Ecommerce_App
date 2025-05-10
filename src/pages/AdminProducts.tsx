@@ -9,17 +9,17 @@ import { Product } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-
-
 const AdminProducts = () => {
     const navigate = useNavigate();
 
+    // Loads and stores the Firestore instance on mount
     const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
     useEffect(() => {
         firebase.then(({ db }) => {
             setDbInstance(db)
         })
     }, [])
+
     // Only fetches products from Firestore (not Fake Store API)
     const fetchProductsFromFirestore = async (): Promise<Product[]> => {
         if(!dbInstance) return [];

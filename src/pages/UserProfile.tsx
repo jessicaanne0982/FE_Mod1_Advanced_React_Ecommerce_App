@@ -1,12 +1,10 @@
 import React, { useState, useEffect} from "react";
-// import { auth, db } from "../firebaseConfig";
 import { doc, getDoc, updateDoc, deleteDoc, getDocs, collection, query, where, Timestamp } from "firebase/firestore";
 import { deleteUser as firebaseDeleteUser } from "firebase/auth";
 import { User, Order } from "../types/types";
 import firebase from "../firebaseConfig";
 import type { Auth } from 'firebase/auth';
 import type { Firestore } from 'firebase/firestore';
-
 
 const UserProfile = () => {
     const [userData, setUserData] = useState<User | null>(null);
@@ -19,6 +17,7 @@ const UserProfile = () => {
     const [authInstance, setAuthInstance] = useState<Auth | null>(null);
     const [dbInstance, setDbInstance] = useState<Firestore | null>(null);
     useEffect(() => {
+        // Initializes and stores Firebase Auth and Firestore instances on mount
         firebase.then(({ auth, db }) => {
             setAuthInstance(auth)
             setDbInstance(db)

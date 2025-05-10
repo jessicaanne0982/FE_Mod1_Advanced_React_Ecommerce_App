@@ -1,5 +1,3 @@
-// jest.setup.js
-
 require('@testing-library/jest-dom');
 const { TextEncoder, TextDecoder } = require('util');
 const dotenv = require('dotenv');

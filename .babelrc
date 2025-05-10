@@ -1,11 +1,10 @@
-// .babelrc
 {
   "presets": [
-    "@babel/preset-env",       
-    "@babel/preset-react",     
-    "@babel/preset-typescript" 
+    "@babel/preset-env",  // Transpile modern JavaScript to be compatible with older environments       
+    "@babel/preset-react",  // Enable support for JSX and React-specific transformations     
+    "@babel/preset-typescript" // Add support for TypeScript syntax
   ],
   "plugins": [
-    "@babel/plugin-transform-modules-commonjs" 
+    "@babel/plugin-transform-modules-commonjs"  // Convert ES modules to CommonJS
   ]
 }

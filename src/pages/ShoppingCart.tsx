@@ -3,7 +3,6 @@ import { Container, Table, Image, Button } from "react-bootstrap";
 import { RootState, AppDispatch } from "../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteFromCart, updateCartItem, clearCart, submitCart  } from "../redux/CartSlice";
-// import type { AppDispatch } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 
 const ShoppingCart = () => {

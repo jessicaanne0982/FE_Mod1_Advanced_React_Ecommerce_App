@@ -1,10 +1,8 @@
 import React, { FormEvent, useState, useEffect } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-// import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import firebase from "../firebaseConfig";
 import type { Auth } from 'firebase/auth';
-
 
 const Login = () => {
     const [email, setEmail] = useState<string>("");
@@ -12,6 +10,7 @@ const Login = () => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate(); // used to redirect users after login
 
+    // Loads and stores the Firebase Auth instance on mount
     const [authInstance, setAuthInstance] = useState<Auth | null>(null);
     useEffect(() => {
         firebase.then(({ auth }) => {
@@ -38,7 +37,6 @@ const Login = () => {
             // Attempt login using Firebase Authentication
             if (!authInstance) return;
             await signInWithEmailAndPassword(authInstance, email, password);
-            // alert("Login successful!");
             // Redirects to the user profile
             navigate("/profile");
         } catch (err) {

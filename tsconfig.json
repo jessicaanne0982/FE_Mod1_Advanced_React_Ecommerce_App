@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "module": "ESNext",         
-    "target": "ES2017",          
-    "moduleResolution": "node",  
-    "jsx": "react-jsx",          
-    "esModuleInterop": true,    
-    "allowSyntheticDefaultImports": true,
-    "types": ["jest", "node"],  
-    "strict": true,
-    "lib": ["ESNext", "dom"]
+    "module": "ESNext",  // Uses modern JavaScript (ES modules)         
+    "target": "ES2017",  // Transpiles code to be compatible with ES2017 environments          
+    "moduleResolution": "node",  // Resolve modules using Node.js modules resolution rules  
+    "jsx": "react-jsx",  // Enable JSX transform        
+    "esModuleInterop": true,  // Allows default imports from CommonJS    
+    "allowSyntheticDefaultImports": true, // Allows importing default exports
+    "types": ["jest", "node"], // Includes the type definitions for Jest and Node 
+    "strict": true,  // Enables strict type-checking
+    "lib": ["ESNext", "dom"]  // Includes the latest JavaScript features and DOM type
   },
-  "include": ["src", "src/__tests__"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src", "src/__tests__"], // Include app source code and test files
+  "exclude": ["node_modules", "dist"]  // Exclude dependencies and build output
 }
