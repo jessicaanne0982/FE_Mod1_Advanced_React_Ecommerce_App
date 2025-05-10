@@ -1,6 +1,6 @@
 import React, { FormEvent, useState, useEffect } from "react";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import firebase from "../firebaseConfig";
 import type { Auth } from 'firebase/auth';
 
@@ -8,27 +8,32 @@ const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
+    const [authInstance, setAuthInstance] = useState<Auth | null>(null);  // Loads and stores the Firebase Auth instance on mount
+    const [hasNavigated, setHasNavigated] = useState(false); // tracks navigation
     const navigate = useNavigate(); // used to redirect users after login
+    const location = useLocation();
 
-    // Loads and stores the Firebase Auth instance on mount
-    const [authInstance, setAuthInstance] = useState<Auth | null>(null);
+    
+    // Load Firebase Auth instance
     useEffect(() => {
         firebase.then(({ auth }) => {
             setAuthInstance(auth)
         })
-    }, [])
+    }, []);
 
-    // Redirect to profile if already logged in
+    // Prevents infinite redirects by checking the current path (Error I found after deploying)
     useEffect(() => {
         if (!authInstance) return;
+
         const unsubscribe = onAuthStateChanged(authInstance, (user) => {
-            if (user) {
+            if (user && location.pathname !== "/profile" && !hasNavigated) {
+                setHasNavigated(true); // Prevent loop
                 navigate("/profile");
             }
         });
-    
-        return () => unsubscribe(); // Clean up the listener
-    }, [navigate, authInstance]);
+
+        return () => unsubscribe(); // clean up the listener
+    }, [authInstance, location.pathname, navigate, hasNavigated]);
 
     // Handles login form submission
     const handleLogin = async (e: FormEvent) => {
@@ -36,9 +41,10 @@ const Login = () => {
         try {
             // Attempt login using Firebase Authentication
             if (!authInstance) return;
+
             await signInWithEmailAndPassword(authInstance, email, password);
-            // Redirects to the user profile
-            navigate("/profile");
+            setHasNavigated(true); // Mark that we've already navigated      
+            navigate("/profile");  // Redirects to the user profile
         } catch (err) {
             // If login fails, show error message
             setError((err as Error).message);

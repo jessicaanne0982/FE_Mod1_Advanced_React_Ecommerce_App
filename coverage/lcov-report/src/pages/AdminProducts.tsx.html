@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -250,7 +250,16 @@
 <a name='L185'></a><a href='#L185'>185</a>
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -288,6 +297,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -305,17 +315,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -328,6 +327,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -350,6 +360,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -357,6 +374,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -443,7 +461,7 @@
 <span class="cstat-no" title="statement not covered" >import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";</span>
 import type { Firestore } from 'firebase/firestore';
 <span class="cstat-no" title="statement not covered" >import firebase from "../firebaseConfig";</span>
-<span class="cstat-no" title="statement not covered" >import { Table, Button, Container, Modal, Form } from "react-bootstrap";</span>
+<span class="cstat-no" title="statement not covered" >import { Table, Button, Container, Modal, Form, Spinner } from "react-bootstrap";</span>
 import { Product } from "../types/types";
 <span class="cstat-no" title="statement not covered" >import { useNavigate } from "react-router-dom";</span>
 <span class="cstat-no" title="statement not covered" >import { useState } from "react";</span>
@@ -469,9 +487,10 @@ const AdminProducts = <span class="cstat-no" title="statement not covered" ><spa
     } as unknown as Product)); // Cast to match the Product type
 };
     // Uses React Query to manage fetching and caching of Firestore products
-    const { data: products = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> refetch } = <span class="cstat-no" title="statement not covered" >useQuery({</span>
+    const { data: products = <span class="branch-0 cbranch-no" title="branch not covered" >[],</span> refetch, isLoading } = <span class="cstat-no" title="statement not covered" >useQuery({</span>
         queryKey: ['adminFirestoreProducts'],
         queryFn: fetchProductsFromFirestore,
+        enabled: !!dbInstance,
     });
     
 &nbsp;
@@ -526,29 +545,37 @@ const AdminProducts = <span class="cstat-no" title="statement not covered" ><spa
         &lt;Container className="mt-4"&gt;
             &lt;h2&gt;Admin - Firestore Products&lt;/h2&gt;
             &lt;Button variant="success" className="mb-3" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >navigate("/add-product")}</span>&gt;Add New Product&lt;/Button&gt;
-            &lt;Table striped bordered hover responsive&gt;
-                &lt;thead&gt;
-                    &lt;tr&gt;
-                        &lt;th&gt;Title&lt;/th&gt;
-                        &lt;th&gt;Price&lt;/th&gt;
-                        &lt;th&gt;Category&lt;/th&gt;
-                        &lt;th&gt;Actions&lt;/th&gt;
-                    &lt;/tr&gt;
-                &lt;/thead&gt;
-                &lt;tbody&gt;
-                    {products.map(<span class="fstat-no" title="function not covered" >product </span>=&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;tr key={product.id}&gt;</span>
-                            &lt;td&gt;{product.title}&lt;/td&gt;
-                            &lt;td&gt;{product.price}&lt;/td&gt;
-                            &lt;td&gt;{product.category}&lt;/td&gt;
-                            &lt;td&gt;
-                                &lt;Button variant="warning" className="me-2" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleEditClick(product)}</span>&gt;Edit&lt;/Button&gt;
-                                &lt;Button variant="danger" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleDelete(String(product.id))}</span>&gt;Delete&lt;/Button&gt;
-                            &lt;/td&gt;
+            {/* Spinner displays until table with Firestore products loads */}
+            {isLoading ? (
+                &lt;div className="text-center my-5"&gt;
+                    &lt;Spinner animation="border" variant="primary" /&gt;
+                    &lt;p&gt;Loading products...&lt;/p&gt;
+                &lt;/div&gt;
+            ) : (
+                &lt;Table striped bordered hover responsive&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;Title&lt;/th&gt;
+                            &lt;th&gt;Price&lt;/th&gt;
+                            &lt;th&gt;Category&lt;/th&gt;
+                            &lt;th&gt;Actions&lt;/th&gt;
                         &lt;/tr&gt;
-                    ))}
-                &lt;/tbody&gt;
-            &lt;/Table&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        {products.map(<span class="fstat-no" title="function not covered" >product </span>=&gt; (
+<span class="cstat-no" title="statement not covered" >                            &lt;tr key={product.id}&gt;</span>
+                                &lt;td&gt;{product.title}&lt;/td&gt;
+                                &lt;td&gt;{product.price}&lt;/td&gt;
+                                &lt;td&gt;{product.category}&lt;/td&gt;
+                                &lt;td&gt;
+                                    &lt;Button variant="warning" className="me-2" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleEditClick(product)}</span>&gt;Edit&lt;/Button&gt;
+                                    &lt;Button variant="danger" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleDelete(String(product.id))}</span>&gt;Delete&lt;/Button&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        ))}
+                    &lt;/tbody&gt;
+                &lt;/Table&gt;
+            )}
 &nbsp;
             {/* Edit Product Modal */}
             &lt;Modal show={showModal} onHide={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setShowModal(false)}</span>&gt;
@@ -631,7 +658,7 @@ const AdminProducts = <span class="cstat-no" title="statement not covered" ><spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-10T10:52:29.269Z
+                at 2025-05-10T18:58:42.134Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
