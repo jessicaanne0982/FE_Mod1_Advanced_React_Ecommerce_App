@@ -45,7 +45,7 @@ const Register = () => {
                 phone,
                 createdAt: new Date(),
             });
-            alert("Registraion successful! User added to the database.");
+            alert("Registraion successful!");
             navigate("/profile"); // Redirects to the profile page after successful registration
         } catch (err) {
             setError((err as Error).message);

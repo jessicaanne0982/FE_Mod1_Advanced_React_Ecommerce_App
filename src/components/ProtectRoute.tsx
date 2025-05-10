@@ -6,8 +6,16 @@ import { ReactNode } from "react";
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     const { user, loading } = useAuth();
   
-    // Loading message shows while auth state is determined
-    if (loading) return <p>Loading...</p>;
+    // Spinner shows while auth state is determined
+    if (loading) {
+      return (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      );
+    }
 
     // If user is authenticated, render the child components
     // If not, redirect to the login page

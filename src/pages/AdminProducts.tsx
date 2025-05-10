@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import type { Firestore } from 'firebase/firestore';
 import firebase from "../firebaseConfig";
-import { Table, Button, Container, Modal, Form } from "react-bootstrap";
+import { Table, Button, Container, Modal, Form, Spinner } from "react-bootstrap";
 import { Product } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -30,9 +30,10 @@ const AdminProducts = () => {
     } as unknown as Product)); // Cast to match the Product type
 };
     // Uses React Query to manage fetching and caching of Firestore products
-    const { data: products = [], refetch } = useQuery({
+    const { data: products = [], refetch, isLoading } = useQuery({
         queryKey: ['adminFirestoreProducts'],
         queryFn: fetchProductsFromFirestore,
+        enabled: !!dbInstance,
     });
     
 
@@ -87,29 +88,37 @@ const AdminProducts = () => {
         <Container className="mt-4">
             <h2>Admin - Firestore Products</h2>
             <Button variant="success" className="mb-3" onClick={() => navigate("/add-product")}>Add New Product</Button>
-            <Table striped bordered hover responsive>
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {products.map(product => (
-                        <tr key={product.id}>
-                            <td>{product.title}</td>
-                            <td>{product.price}</td>
-                            <td>{product.category}</td>
-                            <td>
-                                <Button variant="warning" className="me-2" onClick={() => handleEditClick(product)}>Edit</Button>
-                                <Button variant="danger" onClick={() => handleDelete(String(product.id))}>Delete</Button>
-                            </td>
+            {/* Spinner displays until table with Firestore products loads */}
+            {isLoading ? (
+                <div className="text-center my-5">
+                    <Spinner animation="border" variant="primary" />
+                    <p>Loading products...</p>
+                </div>
+            ) : (
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </Table>
+                    </thead>
+                    <tbody>
+                        {products.map(product => (
+                            <tr key={product.id}>
+                                <td>{product.title}</td>
+                                <td>{product.price}</td>
+                                <td>{product.category}</td>
+                                <td>
+                                    <Button variant="warning" className="me-2" onClick={() => handleEditClick(product)}>Edit</Button>
+                                    <Button variant="danger" onClick={() => handleDelete(String(product.id))}>Delete</Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
 
             {/* Edit Product Modal */}
             <Modal show={showModal} onHide={() => setShowModal(false)}>
